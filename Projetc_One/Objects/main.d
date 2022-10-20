@@ -1,0 +1,10 @@
+.\objects\main.o: ..\COTS\04. APP\main.c
+.\objects\main.o: ..\COTS\01. MCAL\GPIO\DIO_Interface.h
+.\objects\main.o: ..\COTS\00. Common\std_types.h
+.\objects\main.o: ..\COTS\00. Common\bit_cal.h
+.\objects\main.o: ..\COTS\00. Common\tm4c123gh6pm_registers.h
+.\objects\main.o: ..\COTS\01. MCAL\GPTM\GPT.h
+.\objects\main.o: ..\COTS\01. MCAL\SYS_Ctrl\SYS_Ctrl.h
+.\objects\main.o: ..\COTS\01. MCAL\SYS_Ctrl\SYS_Ctrl_types.h
+.\objects\main.o: ..\COTS\01. MCAL\NVIC\IntCtrl_Cfg.h
+.\objects\main.o: ..\COTS\01. MCAL\NVIC\IntCtrl_Types.h

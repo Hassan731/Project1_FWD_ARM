@@ -1,0 +1,112 @@
+															/* Include all Drivers */
+															
+#include "DIO_Interface.h"
+#include "std_types.h"
+#include "bit_cal.h"
+#include "GPT.h"
+#include "SYS_Ctrl.h"
+#include "SysTick.h"
+#include "IntCtrl_Cfg.h"
+
+
+
+															/* Configurations */
+
+static const GPT_ConfigType TIMER_0 = {CHANNEL_ID_0, GPT_MODE_PERIODIC,GPT_PREDEF_TIMER_1US_32BIT};
+static const GPT_ConfigType TIMER_1 = {CHANNEL_ID_1, GPT_MODE_PERIODIC,GPT_PREDEF_TIMER_1US_32BIT};
+
+
+															/* Functions Prototype */
+
+void Get_Time(u8 On, u8 Off);
+void LED_ON(void);
+void LED_OFF(void);
+void LED(void);
+
+
+															/* entry point of program */
+int main(void)
+{
+	// Initialize system control and clock
+	SYSCTRL_Init();
+	
+	// Initialize NVIC
+	IntCrtl_Init();
+	
+	// Initialize DIO 
+	MDIO_Init();
+	
+	// Initialize SysTick
+	SysTick_Init();
+	
+	// Initialize General purpose timers 0 and 1
+	//MGPT_Init(&TIMER_0);
+	//MGPT_Init(&TIMER_1);
+
+    
+	/* set pin direction */
+	
+	MDIO_SetPinDirection(PORTF, PINA1, OUTPUT);
+
+
+	/* call function to take time */
+	/* enter the time by seconds */
+	
+	Get_Time(1, 1);
+	
+	
+	
+	/* Control blinking of an LED */
+	
+	while (1)
+  {
+		LED();
+  }
+	
+	return 0;
+}
+
+
+															/* Function to calculate time by seconds */
+// Initialize two global variables to zero to hold time
+ u32 Time_On = 0;  
+ u32 Time_Off = 0; 
+
+void Get_Time(u8 On, u8 Off)
+{
+    Time_On = On * 1000;
+    Time_Off = Off * 1000;
+}
+
+
+void LED_ON()
+{
+
+    MDIO_WritePin(PORTF, PINA1, HIGH);
+
+}
+
+
+
+void LED_OFF()
+{  
+    MDIO_WritePin(PORTF, PINA1, LOW);
+    
+}
+
+void LED()
+{ 
+	// Turn On LED
+	LED_ON();
+	
+	// Wait for a while and turn it off
+	SetTaskPeriodic(Time_On, &LED_OFF);
+	
+	// Wait for a while and turn it on
+	SetTaskPeriodic(Time_On, &LED_ON);
+	
+}
+
+
+
+
